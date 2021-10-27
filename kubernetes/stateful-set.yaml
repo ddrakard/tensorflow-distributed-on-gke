@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tensorflow-training
+spec:
+  selector:
+    matchLabels:
+      # Label selector that determines which Pods belong to the StatefulSet
+      #  Must match spec: template: metadata: labels
+      app: tensorflow-training
+  serviceName: "tensorflow-training"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: tensorflow-training # Pod template's label selector
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: tensorflow-training
+        imagePullPolicy: Always
+        image: us-docker.pkg.dev/my-project/my-repository/train-transformer
+        env:
+          - name: THIS_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        resources:
+          limits:
+            nvidia.com/gpu: 1

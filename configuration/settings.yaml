@@ -1,0 +1,4 @@
+local_batch_size: 64
+worker_count: 3
+cloud_storage_bucket_name: kubernetes-transformer-training
+cloud_storage_upload_folder: training-snapshots
